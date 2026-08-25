@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Yellow Bear — iOS apps and games. Indie studio from Saint Petersburg.">
+    <title>Yellow Bear — Apps that make life easier</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0a0f;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --bg-card-hover: rgba(255, 255, 255, 0.08);
+            --accent: #FFD700;
+            --accent-dim: rgba(255, 215, 0, 0.15);
+            --text: #e8e8e8;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border: rgba(255, 255, 255, 0.08);
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        body.en .lang-ru { display: none !important; }
+        body:not(.en) .lang-en { display: none !important; }
+
+        /* Language switcher */
+        .lang-switch {
+            position: fixed;
+            top: 1.1rem;
+            right: 1.5rem;
+            z-index: 1001;
+            display: flex;
+            gap: 0.25rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 3px;
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .lang-btn:hover { color: var(--text); }
+        .lang-btn.active {
+            background: var(--accent);
+            color: #0a0a0f;
+        }
+
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .nav-links a:hover { color: var(--accent); }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 15%; left: 50%;
+            transform: translateX(-50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255,215,0,0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-bear {
+            font-size: 7rem;
+            margin-bottom: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+            line-height: 1;
+            filter: drop-shadow(0 0 40px rgba(255,215,0,0.2));
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.03em;
+        }
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--accent-dim);
+            color: var(--accent);
+            padding: 0.5rem 1.25rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+
+        section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .accent-line {
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .app-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .app-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-4px);
+            border-color: rgba(255,215,0,0.15);
+        }
+        .app-card:hover::before { opacity: 1; }
+        .app-icon {
+            width: 56px; height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            background: var(--glass);
+            border: 1px solid var(--border);
+        }
+        .app-card h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+        }
+        .app-card .category {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.75rem;
+        }
+        .app-card .description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .app-card .price {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .app-card .price span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .coming-soon {
+            position: absolute;
+            top: 1rem; right: 1rem;
+            background: var(--accent-dim);
+            color: var(--accent);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            border: 1px solid rgba(255,215,0,0.2);
+            letter-spacing: 0.05em;
+        }
+        .about {
+            background: linear-gradient(180deg, transparent 0%, rgba(255,215,0,0.02) 50%, transparent 100%);
+        }
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .stat {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            display: block;
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            list-style: none;
+        }
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+        .footer-links a:hover { color: var(--accent); }
+        .footer-email {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+        @media (max-width: 768px) {
+            .lang-switch { top: 0.8rem; right: 1rem; }
+            .nav-links { display: none; }
+            .about-content { grid-template-columns: 1fr; gap: 2rem; }
+            .about-stats { grid-template-columns: 1fr; }
+            .hero { padding: 7rem 1.5rem 3rem; }
+            .hero h1 { font-size: 2.5rem; }
+            section { padding: 3rem 1.5rem; }
+            .apps-grid { grid-template-columns: 1fr; }
+        }
+</style>
+</head>
+<body>
+    <div class="lang-switch">
+        <button class="lang-btn active" data-lang="ru" onclick="setLang('ru')">RU</button>
+        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+    </div>
+    <nav>
+        <div class="nav-inner">
+            <a href="./index.html" class="logo">🐻 Yellow Bear</a>
+            <ul class="nav-links">
+                <li><a href="#apps"><span class="lang-ru">Приложения</span><span class="lang-en">Apps</span></a></li>
+                <li><a href="#games"><span class="lang-ru">Игры</span><span class="lang-en">Games</span></a></li>
+                <li><a href="#about"><span class="lang-ru">О нас</span><span class="lang-en">About</span></a></li>
+                <li><a href="./support.html"><span class="lang-ru">Поддержка</span><span class="lang-en">Support</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bear">🐻</div>
+        <h1>Yellow Bear</h1>
+        <p class="lang-ru">Приложения, которые делают жизнь проще, интереснее и немного веселее. Создаём с душой — для вас.</p>
+        <p class="lang-en">Apps that make life easier, more interesting, and a little more fun. Crafted with care — for you.</p>
+        <div class="hero-badge">
+            <span class="lang-ru">✨ 13 проектов в разработке</span>
+            <span class="lang-en">✨ 13 projects in development</span>
+        </div>
+    </section>
+
+    <section id="apps">
+        <div class="section-header">
+            <h2 class="lang-ru">Наши приложения</h2>
+            <h2 class="lang-en">Our Apps</h2>
+            <p class="lang-ru">Инструменты для творчества, продуктивности и развлечений</p>
+            <p class="lang-en">Tools for creativity, productivity, and entertainment</p>
+            <div class="accent-line"></div>
+        </div>
+        <div class="apps-grid">
+            <div class="app-card">
+                <div class="app-icon">🎨</div>
+                <span class="category">Puzzle</span>
+                <h3>Gradient Master</h3>
+                <p class="description lang-ru">iOS-головоломка с градиентами. Собери палитру, расслабься, тренируй цветовое восприятие.</p>
+                <p class="description lang-en">iOS gradient puzzle. Build palettes, relax, train your color perception.</p>
+                <p class="price"><span>$0.99</span> · <span class="lang-ru">Разовая покупка</span><span class="lang-en">One-time</span></p>
+            </div>
+            <div class="app-card">
+                <div class="app-icon">🏃</div>
+                <span class="category">Fitness</span>
+                <h3>RunTracker</h3>
+                <p class="description lang-ru">GPS-трекер для бега. Маршруты, темп, калории — всё, что нужно бегуну.</p>
+                <p class="description lang-en">GPS running tracker. Routes, pace, calories — everything a runner needs.</p>
+                <p class="price"><span class="lang-ru">Бесплатно</span><span class="lang-en">Free</span> · Pro <span class="lang-ru">через IAP</span><span class="lang-en">via IAP</span></p>
+            </div>
+            <div class="app-card">
+                <div class="app-icon">📈</div>
+                <span class="category">Finance</span>
+                <h3>TradingBot</h3>
+                <p class="description lang-ru">Автоматический трейдинг на Python + Alpaca. Стратегии, бэктестинг, уведомления.</p>
+                <p class="description lang-en">Automated trading with Python + Alpaca. Strategies, backtesting, alerts.</p>
+                <p class="price"><span>Freemium</span> · Pro <span class="lang-ru">подписка</span><span class="lang-en">subscription</span></p>
+            </div>
+            <div class="app-card">
+                <div class="app-icon">🤖</div>
+                <span class="category">AI</span>
+                <h3>YB AI Chat</h3>
+                <p class="description lang-ru">5 нейросетей в одном приложении. Выбирай лучшую модель под задачу.</p>
+                <p class="description lang-en">5 neural networks in one app. Pick the best model for the task.</p>
+                <p class="price"><span>Freemium</span> · Credits</p>
+            </div>
+            <div class="app-card">
+                <div class="app-icon">🧹</div>
+                <span class="category">Casual</span>
+                <h3>Pocket Janitor</h3>
+                <p class="description lang-ru">Расслабляющая игра-уборка. Очисти пространство, очисти мысли.</p>
+                <p class="description lang-en">Relaxing cleaning game. Clear the space, clear your mind.</p>
+                <p class="price"><span class="lang-ru">Бесплатно</span><span class="lang-en">Free</span> · <span class="lang-ru">Ad-supported</span><span class="lang-en">Ad-supported</span></p>
+            </div>
+            <div class="app-card">
+                <div class="app-icon">⚡</div>
+                <span class="category">Utility</span>
+                <h3>YBbot</h3>
+                <p class="description lang-ru">Умный помощник для повседневных задач. Быстро, просто, полезно.</p>
+                <p class="description lang-en">Smart assistant for daily tasks. Fast, simple, useful.</p>
+                <p class="price"><span class="lang-ru">Бесплатно</span><span class="lang-en">Free</span></p>
+            </div>
+            <div class="app-card">
+                <div class="app-icon">📺</div>
+                <span class="category">Utility</span>
+                <h3>TVCastPro</h3>
+                <p class="description lang-ru">Транслируй видео на Smart TV. Поддержка DLNA, ручной IP, multicast.</p>
+                <p class="description lang-en">Cast video to Smart TV. DLNA, manual IP, multicast support.</p>
+                <p class="price"><span>$9.99</span> · <span class="lang-ru">7 дней Trial</span><span class="lang-en">7-day Trial</span></p>
+            </div>
+            <div class="app-card">
+                <div class="app-icon">🔮</div>
+                <span class="category">Lifestyle</span>
+                <h3>Tarot Reader</h3>
+                <p class="description lang-ru">AI-гадание на картах Таро. Расклады, толкования, история.</p>
+                <p class="description lang-en">AI-powered Tarot readings. Spreads, interpretations, history.</p>
+                <p class="price"><span>Freemium</span></p>
+            </div>
+            <div class="app-card">
+                <div class="app-icon">🏠</div>
+                <span class="category"><span class="lang-ru">Витрина</span><span class="lang-en">Hub</span></span>
+                <h3>Yellow Bear Hub</h3>
+                <p class="description lang-ru">Центральная точка входа во вселенную Yellow Bear. Все приложения в одном месте.</p>
+                <p class="description lang-en">Central entry point to the Yellow Bear universe. All apps in one place.</p>
+                <p class="price"><span class="lang-ru">Бесплатно</span><span class="lang-en">Free</span></p>
+            </div>
+            <div class="app-card">
+                <div class="app-icon">🎬</div>
+                <span class="category">AI Video</span>
+                <h3>StoryMe Cinema</h3>
+                <p class="description lang-ru">Создавай AI-мультфильмы с consistent character. InstantID, Kling, ElevenLabs.</p>
+                <p class="description lang-en">Create AI cartoons with consistent characters. InstantID, Kling, ElevenLabs.</p>
+                <p class="price"><span>Freemium</span> · Credits</p>
+            </div>
+            <div class="app-card">
+                <div class="app-icon">🎧</div>
+                <span class="category">Audio AI</span>
+                <h3><span class="lang-ru">Аудио-слой контекста</span><span class="lang-en">Audio Context Layer</span></h3>
+                <p class="description lang-ru">Фоновый аудио-ассистент в наушниках. Геофенсинг, шёпот, Silence Registry.</p>
+                <p class="description lang-en">Background audio assistant in your headphones. Geofencing, whisper, Silence Registry.</p>
+                <p class="price"><span>Freemium</span></p>
+            </div>
+            <div class="app-card">
+                <div class="app-icon">⚔️</div>
+                <span class="category">RPG</span>
+                <h3>Chronice Ruins</h3>
+                <p class="description lang-ru">Карточная RPG в духе Slay the Spire. 5 героев, уникальные механики, портретный бой.</p>
+                <p class="description lang-en">Card RPG inspired by Slay the Spire. 5 heroes, unique mechanics, portrait combat.</p>
+                <p class="price"><span>Freemium</span></p>
+            </div>
+            <div class="app-card">
+                <div class="app-icon">💳</div>
+                <span class="category">Finance</span>
+                <h3>YB Subs</h3>
+                <p class="description lang-ru">Трекер подписок. Каталог 90+ сервисов, Trial Watch, бюджет, инсайты.</p>
+                <p class="description lang-en">Subscription tracker. 90+ services catalog, Trial Watch, budget, insights.</p>
+                <p class="price"><span>Pro $4.99</span> · <span class="lang-ru">Разово</span><span class="lang-en">One-time</span></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="games">
+        <div class="section-header">
+            <h2 class="lang-ru">Игры в разработке</h2>
+            <h2 class="lang-en">Games in Development</h2>
+            <p class="lang-ru">Скоро во вселенной Yellow Bear</p>
+            <p class="lang-en">Coming soon to the Yellow Bear universe</p>
+            <div class="accent-line"></div>
+        </div>
+        <div class="apps-grid">
+            <div class="app-card">
+                <span class="coming-soon">SOON</span>
+                <div class="app-icon">🎤</div>
+                <span class="category">Arcade</span>
+                <h3>YB Voice Game</h3>
+                <p class="description lang-ru">Управляй гудением голосом — зверёк летит через пещеру. Офлайн, вирусный потенциал.</p>
+                <p class="description lang-en">Control with voice humming — a creature flies through a cave. Offline, viral potential.</p>
+            </div>
+            <div class="app-card">
+                <span class="coming-soon">SOON</span>
+                <div class="app-icon">🏗️</div>
+                <span class="category">Social</span>
+                <h3>One Tower</h3>
+                <p class="description lang-ru">Одна башня на всё человечество. 1 блок в день, CloudKit, коллективное творение.</p>
+                <p class="description lang-en">One tower for all humanity. 1 block per day, CloudKit, collective creation.</p>
+            </div>
+            <div class="app-card">
+                <span class="coming-soon">SOON</span>
+                <div class="app-icon">🎵</div>
+                <span class="category">Music</span>
+                <h3>YB Echo</h3>
+                <p class="description lang-ru">Одна мелодия в день на весь мир. Пропой её голосом — pitch detection офлайн.</p>
+                <p class="description lang-en">One melody a day for the whole world. Sing it — offline pitch detection.</p>
+            </div>
+            <div class="app-card">
+                <span class="coming-soon">SOON</span>
+                <div class="app-icon">🌬️</div>
+                <span class="category">Wellness</span>
+                <h3><span class="lang-ru">YB Ветерок</span><span class="lang-en">YB Breeze</span></h3>
+                <p class="description lang-ru">Дуй в микрофон — пушинки одуванчика летят к реальным игрокам по всему миру. Самая добрая игра.</p>
+                <p class="description lang-en">Blow into the mic — dandelion seeds fly to real players around the world. The kindest game.</p>
+            </div>
+            <div class="app-card">
+                <span class="coming-soon">SOON</span>
+                <div class="app-icon">🔊</div>
+                <span class="category">Adventure</span>
+                <h3><span class="lang-ru">YB Звуколов</span><span class="lang-en">YB Sound Hunter</span></h3>
+                <p class="description lang-ru">Коллекционируй звуки реального мира. Apple SoundAnalysis, 150+ звуков, сезонность.</p>
+                <p class="description lang-en">Collect sounds from the real world. Apple SoundAnalysis, 150+ sounds, seasonality.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="section-header">
+            <h2 class="lang-ru">О Yellow Bear</h2>
+            <h2 class="lang-en">About Yellow Bear</h2>
+            <p class="lang-ru">Независимая студия из Санкт-Петербурга</p>
+            <p class="lang-en">Indie studio from Saint Petersburg</p>
+            <div class="accent-line"></div>
+        </div>
+        <div class="about-content">
+            <div class="about-text">
+                <h3 class="lang-ru">Санкт-Петербург → Мир</h3>
+                <h3 class="lang-en">Saint Petersburg → World</h3>
+                <p class="lang-ru">Yellow Bear — это независимая студия из Санкт-Петербурга. Никаких инвесторов, никаких офисов — только качество, Xcode и куча кофе.</p>
+                <p class="lang-en">Yellow Bear is an indie studio from Saint Petersburg. No investors, no offices — just quality, Xcode, and lots of coffee.</p>
+                <p class="lang-ru">Миссия простая: создавать приложения, которые решают реальные проблемы и приносят радость. От трекера подписок до AI-мультфильмов — каждый проект делает жизнь чуть лучше.</p>
+                <p class="lang-en">Our mission is simple: create apps that solve real problems and bring joy. From subscription trackers to AI cartoons — every project makes life a little better.</p>
+                <p class="lang-ru">Философия: минимум порога входа, максимум пользы. Без подписок там, где можно обойтись разовой покупкой. Без сбора данных там, где можно работать офлайн.</p>
+                <p class="lang-en">Philosophy: minimum barrier to entry, maximum benefit. No subscriptions where a one-time purchase works. No data collection where offline works.</p>
+            </div>
+            <div class="about-stats">
+                <div class="stat">
+                    <span class="stat-number">13</span>
+                    <span class="stat-label lang-ru">Проектов</span>
+                    <span class="stat-label lang-en">Projects</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label lang-ru">Инди</span>
+                    <span class="stat-label lang-en">Indie</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label lang-ru">Идей</span>
+                    <span class="stat-label lang-en">Ideas</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-inner">
+            <ul class="footer-links">
+                <li><a href="./privacy.html">Privacy Policy</a></li>
+                <li><a href="./terms.html">Terms of Use</a></li>
+                <li><a href="./support.html"><span class="lang-ru">Поддержка</span><span class="lang-en">Support</span></a></li>
+            </ul>
+            <p><span class="lang-ru">Связь:</span><span class="lang-en">Contact:</span> <a href="mailto:yellowbear.games@gmail.com" class="footer-email">yellowbear.games@gmail.com</a></p>
+            <p class="copyright">© 2026 Yellow Bear. <span class="lang-ru">Все права защищены.</span><span class="lang-en">All rights reserved.</span></p>
+        </div>
+    </footer>
+
+    
+    <script>
+        function setLang(lang) {
+            document.body.classList.toggle('en', lang === 'en');
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            localStorage.setItem('yb-lang', lang);
+        }
+        (function() {
+            const saved = localStorage.getItem('yb-lang');
+            if (saved) setLang(saved);
+        })();
+    </script>
+
+</body>
+</html>

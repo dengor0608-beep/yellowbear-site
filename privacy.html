@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Privacy Policy for Yellow Bear apps.">
+    <title>Privacy Policy — Yellow Bear</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0a0f;
+            --accent: #FFD700;
+            --text: #e8e8e8;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+        body.en .lang-ru { display: none !important; }
+        body:not(.en) .lang-en { display: none !important; }
+        .lang-switch {
+            position: fixed;
+            top: 1.1rem;
+            right: 1.5rem;
+            z-index: 1001;
+            display: flex;
+            gap: 0.25rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 3px;
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .lang-btn:hover { color: var(--text); }
+        .lang-btn.active { background: var(--accent); color: #0a0a0f; }
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 7rem 2rem 4rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+        .date {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        h2 {
+            font-size: 1.3rem;
+            margin: 2rem 0 1rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        h3 {
+            font-size: 1.1rem;
+            margin: 1.5rem 0 0.75rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        ul {
+            color: var(--text-secondary);
+            margin: 0 0 1rem 1.5rem;
+        }
+        li { margin-bottom: 0.5rem; }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .app-list {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        .app-list li { margin-bottom: 0.35rem; font-size: 0.9rem; }
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        @media (max-width: 768px) {
+            .content { padding: 6rem 1.5rem 3rem; }
+            h1 { font-size: 1.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-switch">
+        <button class="lang-btn active" data-lang="ru" onclick="setLang('ru')">RU</button>
+        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+    </div>
+    <nav>
+        <div class="nav-inner">
+            <a href="./index.html" class="logo">🐻 Yellow Bear</a>
+        </div>
+    </nav>
+    <div class="content">
+        <h1>Privacy Policy</h1>
+        <p class="date">
+            <span class="lang-ru">Последнее обновление: 25 августа 2026</span>
+            <span class="lang-en">Last updated: August 25, 2026</span>
+        </p>
+
+        <p class="lang-ru">Yellow Bear («мы», «нас» или «наш») уважает вашу конфиденциальность. Эта политика распространяется на все приложения и игры Yellow Bear.</p>
+        <p class="lang-en">Yellow Bear ("we", "us", or "our") respects your privacy. This policy applies to all Yellow Bear apps and games.</p>
+
+        <h2 class="lang-ru">1. Какие данные мы собираем</h2>
+        <h2 class="lang-en">1. Data We Collect</h2>
+        <ul>
+            <li class="lang-ru"><strong>Данные учётной записи:</strong> email, имя пользователя (если требуется для синхронизации через iCloud).</li>
+            <li class="lang-en"><strong>Account data:</strong> email, username (if required for iCloud sync).</li>
+            <li class="lang-ru"><strong>Использование:</strong> анонимная статистика крашей и производительности через Apple или Firebase Crashlytics.</li>
+            <li class="lang-en"><strong>Usage:</strong> anonymous crash and performance statistics via Apple or Firebase Crashlytics.</li>
+            <li class="lang-ru"><strong>Покупки:</strong> информация о транзакциях внутри приложения через Apple App Store. Мы не имеем доступа к вашим платёжным данным.</li>
+            <li class="lang-en"><strong>Purchases:</strong> in-app transaction info via Apple App Store. We do not have access to your payment details.</li>
+        </ul>
+
+        <h2 class="lang-ru">2. Локальные данные и офлайн-режим</h2>
+        <h2 class="lang-en">2. Local Data and Offline Mode</h2>
+        <p class="lang-ru">Многие наши приложения работают полностью офлайн. Ваши данные хранятся локально на устройстве (CoreData, SwiftData, Keychain) и не передаются на наши серверы, если только вы явно не включили синхронизацию через iCloud.</p>
+        <p class="lang-en">Many of our apps work entirely offline. Your data is stored locally on your device (CoreData, SwiftData, Keychain) and is not transmitted to our servers unless you explicitly enable iCloud sync.</p>
+
+        <h2 class="lang-ru">3. Специфика по приложениям</h2>
+        <h2 class="lang-en">3. App-Specific Notes</h2>
+
+        <h3>TVCastPro</h3>
+        <p class="lang-ru">Приложение обнаруживает Smart TV в вашей локальной Wi-Fi сети через Bonjour/mDNS. Никакая информация о вашей сети или устройствах не отправляется за пределы устройства. Доступ к фотобиблиотеке используется только для трансляции изображений и видео на телевизор — мы не загружаем, не копируем и не анализируем ваши медиафайлы.</p>
+        <p class="lang-en">The app discovers Smart TVs on your local Wi-Fi using Bonjour/mDNS. No network or device info is sent outside your device. Photo library access is used solely to cast images and videos to your TV — we do not upload, copy, or analyze your media files.</p>
+
+        <h3>YB Maps</h3>
+        <p class="lang-ru">GPS-данные используются только для отображения вашего местоположения на карте и записи треков. Треки хранятся локально или в iCloud по вашему выбору.</p>
+        <p class="lang-en">GPS data is used only to display your location on the map and record tracks. Tracks are stored locally or in iCloud at your choice.</p>
+
+        <h3>StoryMe Cinema / YB AI Chat / Tarot Reader</h3>
+        <p class="lang-ru">Эти приложения используют сторонние AI-сервисы (OpenAI, Anthropic, ElevenLabs, Kling и др.). Ваши запросы и сгенерированный контент обрабатываются через наши серверы, но мы не храним их дольше, чем необходимо для генерации ответа, и не используем для обучения моделей.</p>
+        <p class="lang-en">These apps use third-party AI services (OpenAI, Anthropic, ElevenLabs, Kling, etc.). Your prompts and generated content are processed through our servers, but we do not store them longer than necessary to generate a response, and do not use them for model training.</p>
+
+        <h3>YB Ветерок / YB Voice Game / YB Echo / YB Звуколов</h3>
+        <p class="lang-ru">Эти игры используют микрофон для обнаружения звука (гудение, дуновение, пение). Анализ происходит полностью на устройстве через AVAudioEngine. Ничего не записывается и не отправляется на серверы.</p>
+        <p class="lang-en">These games use the microphone for sound detection (humming, blowing, singing). Analysis happens entirely on-device via AVAudioEngine. Nothing is recorded or sent to servers.</p>
+
+        <h3>YB Subs / YB Доки</h3>
+        <p class="lang-ru">Ваши финансовые данные (подписки, документы) хранятся локально в SwiftData. Face ID / Touch ID используется только для разблокировки приложения через Keychain.</p>
+        <p class="lang-en">Your financial data (subscriptions, documents) is stored locally in SwiftData. Face ID / Touch ID is used only to unlock the app via Keychain.</p>
+
+        <h2 class="lang-ru">4. Передача третьим лицам</h2>
+        <h2 class="lang-en">4. Third-Party Sharing</h2>
+        <p class="lang-ru">Мы не продаём ваши данные. Данные могут передаваться только:</p>
+        <p class="lang-en">We do not sell your data. Data may only be shared with:</p>
+        <ul>
+            <li class="lang-ru">Apple (App Store, iCloud, Game Center, Apple ID)</li>
+            <li class="lang-en">Apple (App Store, iCloud, Game Center, Apple ID)</li>
+            <li class="lang-ru">Stripe (платежи вне App Store, где применимо)</li>
+            <li class="lang-en">Stripe (payments outside App Store, where applicable)</li>
+            <li class="lang-ru">Firebase Crashlytics (анонимизированные данные о сбоях)</li>
+            <li class="lang-en">Firebase Crashlytics (anonymized crash data)</li>
+            <li class="lang-ru">AI-провайдеры (OpenAI, Anthropic и др. — только запросы для генерации)</li>
+            <li class="lang-en">AI providers (OpenAI, Anthropic, etc. — only generation requests)</li>
+        </ul>
+
+        <h2 class="lang-ru">5. Безопасность</h2>
+        <h2 class="lang-en">5. Security</h2>
+        <p class="lang-ru">Мы используем шифрование данных в покое и при передаче (TLS 1.3). Для чувствительной информации применяется Apple Keychain. Наши серверы размещены в Hetzner (Франкфурт) с LUKS-шифрованием дисков.</p>
+        <p class="lang-en">We encrypt data at rest and in transit (TLS 1.3). Apple Keychain is used for sensitive information. Our servers are hosted at Hetzner (Frankfurt) with LUKS disk encryption.</p>
+
+        <h2 class="lang-ru">6. Ваши права</h2>
+        <h2 class="lang-en">6. Your Rights</h2>
+        <p class="lang-ru">Вы можете запросить удаление всех своих данных, написав на <a href="mailto:yellowbear.games@gmail.com">yellowbear.games@gmail.com</a>. Для приложений с iCloud-синхронизацией вы можете удалить данные в любой момент через настройки iPhone → Apple ID → iCloud → Управление хранилищем.</p>
+        <p class="lang-en">You may request deletion of all your data by emailing <a href="mailto:yellowbear.games@gmail.com">yellowbear.games@gmail.com</a>. For apps with iCloud sync, you can delete data anytime via iPhone Settings → Apple ID → iCloud → Manage Storage.</p>
+
+        <h2 class="lang-ru">7. Контакты</h2>
+        <h2 class="lang-en">7. Contact</h2>
+        <p class="lang-ru">По вопросам конфиденциальности: <a href="mailto:yellowbear.games@gmail.com">yellowbear.games@gmail.com</a></p>
+        <p class="lang-en">Privacy questions: <a href="mailto:yellowbear.games@gmail.com">yellowbear.games@gmail.com</a></p>
+    </div>
+    <footer>
+        <p>© 2026 Yellow Bear · <a href="./index.html"><span class="lang-ru">На главную</span><span class="lang-en">Home</span></a></p>
+    </footer>
+    
+    <script>
+        function setLang(lang) {
+            document.body.classList.toggle('en', lang === 'en');
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            localStorage.setItem('yb-lang', lang);
+        }
+        (function() {
+            const saved = localStorage.getItem('yb-lang');
+            if (saved) setLang(saved);
+        })();
+    </script>
+
+</body>
+</html>
